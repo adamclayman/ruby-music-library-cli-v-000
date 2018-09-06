@@ -1,4 +1,7 @@
+require 'pry'
+
 class Artist
+  extend Concerns::Findable
   attr_accessor :name, :songs
 
   @@all = []
@@ -18,9 +21,9 @@ class Artist
     obj
   end
 
-  def add_song(song_name)
-    song = Song.create(song_name, self)
-    @songs << song
+  def add_song(song)
+    song.artist = self if song.artist == nil
+    @songs << song if @songs.find {|song_match| song_match.name == song.name} == nil
   end
 
   def save
