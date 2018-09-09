@@ -4,9 +4,7 @@ class MusicLibraryController
   attr_accessor :path, :importer
 
   def initialize(path = "./db/mp3s")
-    @path = path
-    @importer = MusicImporter.new(self.path)
-    @importer.import
+    MusicImporter.new(path).import
   end
 
   def call
@@ -41,8 +39,8 @@ class MusicLibraryController
   end
 
   def list_songs
-    @importer.show_files_alphabetized_by_song_name.each_with_index do |filename, i|
-      puts "#{i + 1}. #{filename.split(".")[0]}"
+    Song.all.sort {|a, b| a.name <=> b.name}.each_with_index do |song, i|
+      puts "#{i+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
     end
   end
 
@@ -86,7 +84,16 @@ class MusicLibraryController
   def play_song
     puts "Which song number would you like to play?"
     song_number = gets.chomp.to_i
-    if ((song_number.is_a? Integer ) && (song_number >= 1) && (song_number <= Song.all.length))
+    if (1..Song.all.length).include?(song_number)
+      song = Song.all.sort {|a,b| a.name <=> b.name}[song_number - 1]
+      puts "Playing #{song.name} by #{song.artist.name}"
+    end
+  end
+end
+
+
+=begin
+    if ((song_number >= 1) && (song_number <= Song.all.length))
       @importer.show_files_alphabetized_by_song_name.each_with_index do |filename, i|
         if i == (song_number - 1)
           raw_data = filename.split(".mp3")[0].split(" - ")
@@ -102,4 +109,4 @@ class MusicLibraryController
       song_number = gets.chomp.to_i
     end
   end
-end
+=end
