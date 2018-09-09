@@ -11,33 +11,33 @@ class MusicLibraryController
 
   def call
     i = "input"
-    case i
-      when "list songs"
-        self.list_songs
-      when "list artists"
-        self.list_artists
-      when "list genres"
-        self.list_genres
-      when "list artist"
-        self.list_songs_by_artist
-      when "list genre"
-        self.list_songs_by_genre
-      when "play song"
-        self.play_song
-      when "exit"
-        # Exit / Break from Case Statement
-      else
-        puts "Welcome to your music library!"
-        puts "To list all of your songs, enter 'list songs'."
-        puts "To list all of the artists in your library, enter 'list artists'."
-        puts "To list all of the genres in your library, enter 'list genres'."
-        puts "To list all of the songs by a particular artist, enter 'list artist'."
-        puts "To list all of the songs of a particular genre, enter 'list genre'."
-        puts "To play a song, enter 'play song'."
-        puts "To quit, type 'exit'."
-        puts "What would you like to do?"
-        i = gets.chomp
-      end
+    while i != "exit"
+      case i
+        when "list songs"
+          self.list_songs
+        when "list artists"
+          self.list_artists
+        when "list genres"
+          self.list_genres
+        when "list artist"
+          self.list_songs_by_artist
+        when "list genre"
+          self.list_songs_by_genre
+        when "play song"
+          self.play_song
+        else
+          puts "Welcome to your music library!"
+          puts "To list all of your songs, enter 'list songs'."
+          puts "To list all of the artists in your library, enter 'list artists'."
+          puts "To list all of the genres in your library, enter 'list genres'."
+          puts "To list all of the songs by a particular artist, enter 'list artist'."
+          puts "To list all of the songs of a particular genre, enter 'list genre'."
+          puts "To play a song, enter 'play song'."
+          puts "To quit, type 'exit'."
+          puts "What would you like to do?"
+          i = gets.chomp
+        end
+    end
   end
 
   def list_songs
@@ -84,15 +84,22 @@ class MusicLibraryController
   end
 
   def play_song
-    self.list_songs
-    song_number = 0
-    unless ((song_number.is_a? Integer ) && (song_number >= 1) && (song_number <= Song.all.length))
+    puts "Which song number would you like to play?"
+    song_number = gets.chomp.to_i
+    if ((song_number.is_a? Integer ) && (song_number >= 1) && (song_number <= Song.all.length))
+      @importer.show_files_alphabetized_by_song_name.each_with_index do |filename, i|
+        if i == (song_number - 1)
+          raw_data = filename.split(".mp3")[0].split(" - ")
+          puts "Playing #{raw_data[1]} by #{raw_data[0]}"
+        end
+      end
+    elsif (song_number > Song.all.length)
+      # Do nothing
+    elsif (song_number == 0)
+      # Do nothing
+    else
       puts "Which song number would you like to play?"
-      song_number = gets.chomp
-    end
-    @importer.show_files_alphabetized_by_song_name.each_with_index do |filename, i|
-      raw_data = filename.split(".mp3")[0].split(" - ")
-      puts "Playing #{raw_data[1]} by #{raw_data[0]}"
+      song_number = gets.chomp.to_i
     end
   end
 end
