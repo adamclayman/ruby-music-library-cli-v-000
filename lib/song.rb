@@ -21,11 +21,7 @@ class Song
     obj.save
     obj
   end
-
-  def self.find_by_name(song_name)
-    self.all.find {|song| song.name == song_name}
-  end
-
+  
   def artist=(artist_name)
     @artist = Artist.find_or_create_by_name(artist_name)
     @artist.add_song(self)
