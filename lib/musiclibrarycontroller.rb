@@ -95,7 +95,7 @@ class MusicLibraryController
       end
     elsif (song_number > Song.all.length)
       # Do nothing
-    elsif (song_number == 0)
+    elsif (song_number == 0 || song_number == "0")
       # Do nothing
     else
       puts "Which song number would you like to play?"
