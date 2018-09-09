@@ -21,6 +21,11 @@ class Genre
     obj
   end
 
+  def artists
+    response = @songs.collect {|song| song.artist}
+    response.uniq
+  end
+
   def save
     @@all << self
   end
