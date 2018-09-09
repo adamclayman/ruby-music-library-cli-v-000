@@ -23,6 +23,22 @@ class MusicLibraryController
       puts "What would you like to do?"
       i = gets.chomp
     end
+
+    case i
+    when "exit"
+
+    else
+      puts "Welcome to your music library!"
+      puts "To list all of your songs, enter 'list songs'."
+      puts "To list all of the artists in your library, enter 'list artists'."
+      puts "To list all of the genres in your library, enter 'list genres'."
+      puts "To list all of the songs by a particular artist, enter 'list artist'."
+      puts "To list all of the songs of a particular genre, enter 'list genre'."
+      puts "To play a song, enter 'play song'."
+      puts "To quit, type 'exit'."
+      puts "What would you like to do?"
+      i = gets.chomp
+    end
   end
 
   def list_songs
@@ -70,9 +86,9 @@ class MusicLibraryController
 
   def play_song
     self.list_songs
-    puts "Which song number would you like to play?"
     song_number = 0
-    unless ((song_number.is_a? Integer ) && (song_number >= 1) && (song_number <= Song.all.length))
+    until ((song_number.is_a? Integer ) && (song_number >= 1) && (song_number <= Song.all.length))
+      puts "Which song number would you like to play?"
       song_number = gets.chomp
     end
     @importer.show_files_alphabetized_by_song_name.each_with_index do |filename, i|
